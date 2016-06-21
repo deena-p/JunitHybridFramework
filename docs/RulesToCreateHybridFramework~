@@ -1,0 +1,17 @@
+1. Create eclipse project
+2. Make package com.testproject.test
+3. Create DriverScript, Constants, KeyWords java files in that package
+4. Make package com.testproject.xlsx
+5. Add keywords, testcases in the Suite.xlsx and copy other xlsx files in that package
+6. Include required selenium, POI, and logging jars in maven file or in a project
+7. Create package called com.testproject.xlsx.read
+8. Create ExcelReader.java file in that package
+9. Create package com.testprojecct.config
+10. Create CONFIG.properties and OR.properties in that package
+11. Create package com.testproject.logs
+12. Implement logging mechanism to that package
+13. Create xlsx reading login
+14. Implement empty keywords functions in Keywords.java using Reflection API
+15. Generate dummy reports by making reportTestcaseResult
+16. Implement the keywords according to Keywords.java
+17. Test the implemented keywords
