@@ -12,8 +12,13 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.junithybrid.test.DriverScript;
 
 public class ExcelReader {
+	private final Logger logger = LoggerFactory.getLogger(DriverScript.class);
 	public String fileName;
 	public FileInputStream fileInputStream = null;
 	public FileOutputStream fileOutputStream = null;
@@ -33,7 +38,7 @@ public class ExcelReader {
 			sheet = wb.getSheetAt(0);
 
 		} catch (Throwable t) {
-			t.printStackTrace();
+			logger.warn(t.getMessage());
 		} finally {
 			fileInputStream.close();
 		}
@@ -49,16 +54,16 @@ public class ExcelReader {
 			sheet = wb.getSheet(sheetName);
 			row = sheet.getRow(rowNum);
 			Row columnsRow = sheet.getRow(0);
+			int colNum = 0;
 
 			Iterator<Cell> cellValues = columnsRow.cellIterator();
 			while (cellValues.hasNext()) {
-				int colNum = 0;
 				if (cellValues.next().toString().equals(colName)) {
 					return getCellData(sheetName, colNum, rowNum);
 				}
 				colNum++;
 			}
-			System.out.println("Column '"+ colName + "' does not exist");
+			logger.warn("Column '"+ colName + "' does not exist");
 		}
 
 		return null;
@@ -69,14 +74,14 @@ public class ExcelReader {
 			sheet = wb.getSheet(sheetName);
 			if (rowNum < sheet.getPhysicalNumberOfRows()) {
 				row = sheet.getRow(rowNum);
-				if (colNum < row.getPhysicalNumberOfCells()) {
+				if (colNum < sheet.getRow(0).getPhysicalNumberOfCells()) {
 					return row.getCell(colNum).toString();
 				} else {
-					System.out.println("Column number: "+ colNum +" is incorrect");
+					logger.warn("Column number: "+ colNum +" is incorrect");
 				}
 
 			} else {
-				System.out.println("Row number: "+ rowNum +" is incorrect");
+				logger.warn("Row number: "+ rowNum +" is incorrect");
 			}
 		}
 		return null;
@@ -119,7 +124,7 @@ public class ExcelReader {
 		if (sheet != null) {
 			return true;
 		}
-		System.out.println("Sheet '"+ sheetName +"' does not exist");
+		logger.warn("Sheet '"+ sheetName +"' does not exist");
 		return false;
 	}
 
@@ -160,11 +165,11 @@ public class ExcelReader {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String sFile = "/home/deena/workspace/JunitHybridFramework/src/main/java/com/junithybrid/xlsx/Suite1.xlsx";
+		String sFile = "/home/deena/workspace/JunitHybridFramework/src/main/java/com/junithybrid/xlsx/Suite.xlsx";
 		ExcelReader reader = new ExcelReader(sFile);
-		System.out.println(reader.getCellData("Testcase2", 10, 10));
-		System.out.println(reader.getCellData("Testcase", "TC_NAME2", 10));
-		System.out.println(reader.getCellData("Testcase", 10, 1));
+		//System.out.println(reader.getCellData("Testcase2", 10, 10));
+		System.out.println(reader.getCellData("TestSuite", "RunMode", 2));
+		//System.out.println(reader.getCellData("Testcase", 10, 1));
 
 	}
 

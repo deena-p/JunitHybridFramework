@@ -1,0 +1,44 @@
+2016-06-28 19:25:14 INFO  - Initializing the driver script.....
+2016-06-28 19:25:15 INFO  - Executing the Suite.xlsx.....
+2016-06-28 19:25:15 INFO  - *****Executing the test suite ID: Check_Items********************
+2016-06-28 19:25:16 INFO  - =======Executing the test cases ID: LoginTest=======================
+2016-06-28 19:25:16 INFO  - =======Executing the test cases ID: AddItemsToCard=======================
+2016-06-28 19:25:16 WARN  - Sheet 'AddItemsToCard' does not exist
+2016-06-28 19:25:16 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:25:16 INFO  - =======Executing the test cases ID: testId=======================
+2016-06-28 19:25:16 WARN  - Sheet 'testId' does not exist
+2016-06-28 19:25:16 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:25:16 INFO  - =======Executing the test cases ID: CheckItems=======================
+2016-06-28 19:25:16 ERROR - java.lang.NullPointerException
+2016-06-28 19:45:19 INFO  - Initializing the driver script.....
+2016-06-28 19:45:20 INFO  - Executing the Suite.xlsx.....
+2016-06-28 19:45:20 INFO  - *****Executing the test suite ID: Check_Items********************
+2016-06-28 19:46:30 INFO  - Initializing the driver script.....
+2016-06-28 19:46:31 INFO  - Executing the Suite.xlsx.....
+2016-06-28 19:46:31 INFO  - *****Executing the test suite ID: Check_Items********************
+2016-06-28 19:46:31 INFO  - =======Executing the test cases ID: AddItemsToCard=======================
+2016-06-28 19:46:31 WARN  - Sheet 'AddItemsToCard' does not exist
+2016-06-28 19:46:31 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:46:31 INFO  - =======Executing the test cases ID: testId=======================
+2016-06-28 19:46:31 WARN  - Sheet 'testId' does not exist
+2016-06-28 19:46:31 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:46:31 INFO  - =======Executing the test cases ID: CheckItems=======================
+2016-06-28 19:46:31 ERROR - java.lang.NullPointerException
+2016-06-28 19:46:44 INFO  - Initializing the driver script.....
+2016-06-28 19:46:45 INFO  - Executing the Suite.xlsx.....
+2016-06-28 19:46:45 INFO  - *****Executing the test suite ID: Check_Items********************
+2016-06-28 19:47:57 INFO  - =======Executing the test cases ID: AddItemsToCard=======================
+2016-06-28 19:47:57 WARN  - Sheet 'AddItemsToCard' does not exist
+2016-06-28 19:47:57 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:48:26 INFO  - =======Executing the test cases ID: testId=======================
+2016-06-28 19:48:28 WARN  - Sheet 'testId' does not exist
+2016-06-28 19:48:41 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:49:53 INFO  - =======Executing the test cases ID: CheckItems=======================
+2016-06-28 19:51:30 ERROR - java.lang.NullPointerException
+2016-06-28 19:52:07 INFO  - Initializing the driver script.....
+2016-06-28 19:52:08 INFO  - Executing the Suite.xlsx.....
+2016-06-28 19:52:08 INFO  - *****Executing the test suite ID: Check_Items********************
+2016-06-28 19:52:09 INFO  - =======Executing the test cases ID: AddItemsToCard=======================
+2016-06-28 19:52:09 WARN  - Sheet 'AddItemsToCard' does not exist
+2016-06-28 19:52:09 WARN  - Checking if there are keywords present for this testcase
+2016-06-28 19:52:09 ERROR - java.lang.NullPointerException
