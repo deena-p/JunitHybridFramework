@@ -1,0 +1,7 @@
+/target/
+
+*.log
+*.MF
+*.MF
+*.MF
+target/classes/META-INF/MANIFEST.MF
