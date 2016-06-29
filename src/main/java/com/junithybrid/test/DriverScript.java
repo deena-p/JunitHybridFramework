@@ -1,6 +1,8 @@
 package com.junithybrid.test;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +11,7 @@ import com.junithybrid.xlsx.read.ExcelReader;
 
 public class DriverScript {
 
-	private final Logger logger = LoggerFactory.getLogger(DriverScript.class);
+	public static Logger logger = LoggerFactory.getLogger(DriverScript.class);
 	public ExcelReader master_TSuite_Reader = null;
 	public ExcelReader current_TSuite_Reader = null;
 	public int currentTSuiteID;
@@ -21,7 +23,17 @@ public class DriverScript {
 	public String current_TStepName = null;
 	public String current_keyWord = null;
 	public String fileRunMode = null;
-
+	
+	public Method[] methods;
+	public Keywords keywords;
+	public String keyword_execution_result = null;
+	
+	public DriverScript(){
+		keywords = new Keywords();
+		methods = keywords.getClass().getMethods();
+	}
+	
+	
 	public void initialize() throws IOException {
 		logger.info("Initializing the driver script.....");
 		master_TSuite_Reader = new ExcelReader(
@@ -74,19 +86,19 @@ public class DriverScript {
 											if (current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName,Constants.TestCase_TCASE_ID, currentTStepID).equals(current_TCaseName)) {
 												current_keyWord = current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord, currentTStepID);
 												logger.debug("................Executing the keyword: " + current_keyWord	+ "...............");
+												executeKeyword(current_keyWord);
 											}
 										}
 									}
 
 								}
-							}else{
+							}else {
 								logger.warn("Checking if there are keywords present for this testcase");
 								for (currentTStepID = 1; currentTStepID < current_TSuite_Reader.rowCount(Constants.TestSteps_SheetName); currentTStepID++) {
 									if (current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName,Constants.TestCase_TCASE_ID, currentTStepID).equals(current_TCaseName)) {
-										current_keyWord = current_TSuite_Reader.getCellData(
-												Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord,
-												currentTStepID);
+										current_keyWord = current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord,currentTStepID);
 										logger.debug("................Executing the keyword: " + current_keyWord	+ "...............");
+										executeKeyword(current_keyWord);
 									}else{
 										if (currentTStepID == current_TSuite_Reader.rowCount(Constants.TestSteps_SheetName)-1){
 											logger.debug("No keywords found.......");
@@ -107,8 +119,24 @@ public class DriverScript {
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public String openBrowser(){
+		logger.debug("Opening the browser from parent....");
+		return "Test";
+	}
+	
+	private void executeKeyword(String sKeyword) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
+		for(Method method:methods){
+			if (method.getName().equals(sKeyword)){
+				keyword_execution_result = (String) method.invoke(keywords, (Object[])null);
+				System.out.println(keyword_execution_result);
+			}
+		}
+	}
+
+	public static void main(String[] args) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		DriverScript ds = new DriverScript();
 		ds.initialize();
+		//ds.executeKeyword("clickButton");
 	}
 }

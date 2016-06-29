@@ -18,4 +18,7 @@ public class Constants {
 	
 	public static final String RunMode_Yes = "Y";
 	public static final String RunMode_No = "N";
+	
+	public static final String Keyword_Pass = "Pass";
+	public static final String Keyword_Fail = "Fail";
 }
