@@ -20,12 +20,21 @@ public class DriverScript {
 	public String current_TCaseName = null;
 	public String current_TStepName = null;
 	public String current_keyWord = null;
+	public String fileRunMode = null;
 
 	public void initialize() throws IOException {
 		logger.info("Initializing the driver script.....");
 		master_TSuite_Reader = new ExcelReader(
 				System.getProperty("user.dir") + "/src/main/java/com/junithybrid/xlsx/Suite.xlsx");
 		logger.info("Executing the Suite.xlsx.....");
+
+		/*
+		 * 
+		 * check the run mode of Test suite check the run mode of the test cases in
+		 * each test suite execute the keywords of test cases serially execute the
+		 * keywords as many times as number of data sets which are set to Y
+		 * 
+		 */
 
 		try{
 			for (currentTSuiteID = 1; currentTSuiteID < master_TSuite_Reader.rowCount(Constants.TestSuite_SheetName); currentTSuiteID++) {
@@ -42,23 +51,28 @@ public class DriverScript {
 
 					for (currentTCaseID = 1; currentTCaseID < current_TSuite_Reader.rowCount(Constants.TestCases_SheetName); currentTCaseID++) {
 
-						if (current_TSuite_Reader.getCellData(Constants.TestCases_SheetName, Constants.TestCase_RunMode, currentTCaseID).equals(Constants.RunMode_Yes)) {
-							current_TCaseName = current_TSuite_Reader.getCellData(Constants.TestCases_SheetName,
-									Constants.TestCase_TCASE_ID, currentTCaseID);
+						current_TCaseName = current_TSuite_Reader.getCellData(Constants.TestCases_SheetName, Constants.TestCase_TCASE_ID, currentTCaseID);
+
+						fileRunMode = current_TSuite_Reader.getCellData(Constants.TestCases_SheetName, Constants.TestCase_RunMode, currentTCaseID);
+
+						if (current_TCaseName != null && fileRunMode.equals(Constants.RunMode_Yes) && fileRunMode != null) {
+
 							logger.info("=======Executing the test cases ID: " + current_TCaseName + "=======================");
 
 							if (current_TSuite_Reader.isSheetExist(current_TCaseName)){
+
 								for (currentTestDataID = 1; currentTestDataID < current_TSuite_Reader.rowCount(current_TCaseName); currentTestDataID++) {
 
-									if (current_TSuite_Reader.getCellData(current_TCaseName, Constants.TestData_RunMode, currentTestDataID).equals(Constants.RunMode_Yes)) {
-										String first_column = current_TSuite_Reader.getCellData(current_TCaseName, 1, currentTestDataID);
-										logger.debug("-----------Executing the test for: " + first_column + "------------------");
+									fileRunMode = current_TSuite_Reader.getCellData(current_TCaseName, Constants.TestData_RunMode, currentTestDataID); 
+
+									if (fileRunMode.equals(Constants.RunMode_Yes) && fileRunMode != null) {
+
+										logger.debug("-----------Executing the test for: " + current_TSuite_Reader.getCellData(current_TCaseName, 1, currentTestDataID) + "------------------");
 
 										for (currentTStepID = 1; currentTStepID < current_TSuite_Reader.rowCount(Constants.TestSteps_SheetName); currentTStepID++) {
+
 											if (current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName,Constants.TestCase_TCASE_ID, currentTStepID).equals(current_TCaseName)) {
-												current_keyWord = current_TSuite_Reader.getCellData(
-														Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord,
-														currentTStepID);
+												current_keyWord = current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord, currentTStepID);
 												logger.debug("................Executing the keyword: " + current_keyWord	+ "...............");
 											}
 										}
@@ -69,7 +83,6 @@ public class DriverScript {
 								logger.warn("Checking if there are keywords present for this testcase");
 								for (currentTStepID = 1; currentTStepID < current_TSuite_Reader.rowCount(Constants.TestSteps_SheetName); currentTStepID++) {
 									if (current_TSuite_Reader.getCellData(Constants.TestSteps_SheetName,Constants.TestCase_TCASE_ID, currentTStepID).equals(current_TCaseName)) {
-										//logger.info("Keywords are found and executing the keywords....");
 										current_keyWord = current_TSuite_Reader.getCellData(
 												Constants.TestSteps_SheetName, Constants.TestSteps_KeyWord,
 												currentTStepID);
@@ -98,13 +111,4 @@ public class DriverScript {
 		DriverScript ds = new DriverScript();
 		ds.initialize();
 	}
-
-	/*
-	 * check the run mode of Test suite check the run mode of the test cases in
-	 * each test suite execute the keywords of test cases serially execute the
-	 * keywords as many times as number of data sets which are set to Y
-	 * 
-	 * 
-	 * 
-	 */
 }

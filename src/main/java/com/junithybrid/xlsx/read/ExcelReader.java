@@ -45,8 +45,22 @@ public class ExcelReader {
 	}
 
 	public int rowCount(String sheetName) {
+		int rowTotal = 0;
+		int colTotal = 0;
 		sheet = wb.getSheet(sheetName);
-		return sheet.getPhysicalNumberOfRows();
+		try{
+			while (rowTotal < sheet.getPhysicalNumberOfRows()){
+				colTotal = sheet.getRow(rowTotal).getPhysicalNumberOfCells();
+			
+				if (colTotal > 1){
+					rowTotal++;
+				}
+			}
+		}catch(Throwable t){
+			//t.printStackTrace();
+			return rowTotal;
+		}
+		return rowTotal;
 	}
 
 	public String getCellData(String sheetName, String colName, int rowNum) {
@@ -58,8 +72,11 @@ public class ExcelReader {
 
 			Iterator<Cell> cellValues = columnsRow.cellIterator();
 			while (cellValues.hasNext()) {
-				if (cellValues.next().toString().equals(colName)) {
-					return getCellData(sheetName, colNum, rowNum);
+				String temp = cellValues.next().toString();
+				//System.out.println(temp);
+				if (temp.equals(colName)) {
+					String val = getCellData(sheetName, colNum, rowNum); 
+					return val;
 				}
 				colNum++;
 			}
@@ -70,19 +87,26 @@ public class ExcelReader {
 	}
 
 	public String getCellData(String sheetName, int colNum, int rowNum) {
-		if (isSheetExist(sheetName)) {
-			sheet = wb.getSheet(sheetName);
-			if (rowNum < sheet.getPhysicalNumberOfRows()) {
-				row = sheet.getRow(rowNum);
-				if (colNum < sheet.getRow(0).getPhysicalNumberOfCells()) {
-					return row.getCell(colNum).toString();
-				} else {
-					logger.warn("Column number: "+ colNum +" is incorrect");
-				}
+		try{
+			if (isSheetExist(sheetName)) {
+				sheet = wb.getSheet(sheetName);
 
-			} else {
-				logger.warn("Row number: "+ rowNum +" is incorrect");
+				if (rowNum < rowCount(sheetName)) {
+					row = sheet.getRow(rowNum);
+					if (colNum < sheet.getRow(0).getPhysicalNumberOfCells()) {
+						String val2 = row.getCell(colNum).toString(); 
+						return val2;
+					} else {
+						logger.warn("Column number: "+ colNum +" is incorrect");
+					}
+
+				} else {
+					logger.warn("Row number: "+ rowNum +" is incorrect");
+				}
 			}
+
+		}catch(Throwable t){
+			t.printStackTrace();
 		}
 		return null;
 	}
@@ -165,12 +189,13 @@ public class ExcelReader {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String sFile = "/home/deena/workspace/JunitHybridFramework/src/main/java/com/junithybrid/xlsx/Suite.xlsx";
+		//String sFile = "/home/deena/workspace/JunitHybridFramework/src/main/java/com/junithybrid/xlsx/Suite.xlsx";
+		String sFile = "/home/deena/workspace/JunitHybridFramework/src/main/java/com/junithybrid/xlsx/Check_Items.xlsx";
 		ExcelReader reader = new ExcelReader(sFile);
 		//System.out.println(reader.getCellData("Testcase2", 10, 10));
-		System.out.println(reader.getCellData("TestSuite", "RunMode", 2));
-		//System.out.println(reader.getCellData("Testcase", 10, 1));
-
+		//System.out.println(reader.getCellData("TestSuite", "TSUITE_RunMode", 2));
+		System.out.println(reader.getCellData("Testcases", 2, 3));
+		//System.out.println(reader.rowCount("Testcases") + "is the row Count");
 	}
 
 }
