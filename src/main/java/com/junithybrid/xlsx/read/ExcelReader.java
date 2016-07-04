@@ -183,6 +183,8 @@ public class ExcelReader {
 			return cell.getErrorCellValue();
 		case Cell.CELL_TYPE_FORMULA:
 			return cell.getCellFormula();
+		case Cell.CELL_TYPE_BLANK:
+			return null;
 		default:
 		}
 		return null;
