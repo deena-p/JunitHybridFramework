@@ -1,5 +1,4 @@
 /target/
-/logs/
 *.log
 *.MF
 .classpath
