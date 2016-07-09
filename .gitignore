@@ -2,3 +2,6 @@
 /logs/
 *.log
 *.MF
+.classpath
+.project
+.settings/
