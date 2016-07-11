@@ -39,7 +39,7 @@
 	</appender>
 
 	<!-- Send logs to both console and file audit -->
-	<logger name="com.junithybrid.test" level="DEBUG" additivity="false">
+	<logger name="com.junithybrid.test" level="INFO" additivity="false">
 		<appender-ref ref="LOG_FILE" />
 		<appender-ref ref="STDOUT" />
 	</logger>

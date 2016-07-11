@@ -21,4 +21,7 @@ public class Constants {
 	
 	public static final String Keyword_Pass = "Pass";
 	public static final String Keyword_Fail = "Fail";
+	public static final String Keyword_Skip = "Skip";
+	
+	public static final String Keyword_Result = "Result";
 }

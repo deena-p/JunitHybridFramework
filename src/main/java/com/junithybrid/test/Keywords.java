@@ -14,7 +14,7 @@ public class Keywords{
 		return Constants.Keyword_Pass;
 	}
 	
-	public String naviage(){
+	public String navigate(){
 		logger.debug("Navigating to ....");
 		
 		return Constants.Keyword_Pass;
@@ -32,9 +32,10 @@ public class Keywords{
 		return Constants.Keyword_Pass;
 	}
 	
-	public void writeInInput(){
+	public String writeInInput(){
 		logger.debug("Writing input....");
 		
+		return Constants.Keyword_Pass;
 	}
 	
 	public String clickButton(){
@@ -46,6 +47,6 @@ public class Keywords{
 	public String verifyText(){
 		logger.debug("Verifying text....");
 		
-		return Constants.Keyword_Pass;
+		return Constants.Keyword_Fail;
 	}
 }

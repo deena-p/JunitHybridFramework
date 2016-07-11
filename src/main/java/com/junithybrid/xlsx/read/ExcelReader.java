@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -21,7 +22,7 @@ public class ExcelReader {
 	private final Logger logger = LoggerFactory.getLogger(DriverScript.class);
 	public String fileName;
 	public FileInputStream fileInputStream = null;
-	public FileOutputStream fileOutputStream = null;
+	public FileOutputStream fos = null;
 
 	private XSSFWorkbook wb = null;
 	private XSSFSheet sheet = null;
@@ -110,9 +111,54 @@ public class ExcelReader {
 		}
 		return null;
 	}
+	
+	public boolean setCellData(String sheetName, int colNum, int rowNum, String data) throws IOException {
+		try{
+			fos = new FileOutputStream(new File(fileName));
+			if (isSheetExist(sheetName)) {
+				sheet = wb.getSheet(sheetName);
 
-	public boolean setCellData(String sheetName, String colName, int rowNum, String data) {
-		sheet = wb.getSheet(sheetName);
+				if (rowNum < rowCount(sheetName)) {
+					row = sheet.getRow(rowNum);
+					if (colNum < sheet.getRow(0).getPhysicalNumberOfCells()) {
+						row.createCell(colNum);
+						row.getCell(colNum).setCellValue(data);
+						wb.write(fos);
+						return true;
+					} else {
+						logger.warn("Column number: "+ colNum +" is incorrect");
+					}
+
+				} else {
+					logger.warn("Row number: "+ rowNum +" is incorrect");
+				}
+			}
+
+		}catch(Throwable t){
+			t.printStackTrace();
+		}finally{
+			fos.close();
+		}
+		return false;
+	}
+
+	public boolean setCellData(String sheetName, String colName, int rowNum, String data) throws IOException {
+		if (isSheetExist(sheetName)) {
+			sheet = wb.getSheet(sheetName);
+			row = sheet.getRow(rowNum);
+			Row columnsRow = sheet.getRow(0);
+			int colNum = 0;
+
+			Iterator<Cell> cellValues = columnsRow.cellIterator();
+			while (cellValues.hasNext()) {
+				String temp = cellValues.next().toString();
+				if (temp.equals(colName)) {
+					return setCellData(sheetName, colNum, rowNum, data);
+				}
+				colNum++;
+			}
+			logger.warn("Column '"+ colName + "' does not exist");
+		}
 
 		return false;
 	}
@@ -123,18 +169,60 @@ public class ExcelReader {
 		return false;
 	}
 
-	public boolean addSheet(String sheetName) {
-
-		return false;
+	public boolean addSheet(String sheetName) throws IOException {
+		try{
+			fos = new FileOutputStream(new File(fileName));
+			wb.createSheet(sheetName);
+			wb.write(fos);
+		}catch(Throwable t){
+			t.printStackTrace();
+			return false;
+		}finally{
+			fos.close();
+		}
+		return true;
 	}
 
-	public boolean removeSheet(String sheetName) {
-
-		return false;
+	public boolean removeSheet(String sheetName) throws IOException {
+		try{
+			fos = new FileOutputStream(new File(fileName));
+			wb.removeSheetAt(wb.getSheetIndex(sheetName));
+			wb.write(fos);
+		}catch(Throwable t){
+			t.printStackTrace();
+			return false;
+		}finally{
+			fos.close();
+		}
+		return true;
 	}
 
-	public boolean addColumn(String sheetName, String colName) {
+	public boolean addColumn(String sheetName, String colName) throws IOException {
+		try{
+			fos = new FileOutputStream(new File(fileName));
+			if (isSheetExist(sheetName)) {
+				sheet = wb.getSheet(sheetName);
+				Row row = sheet.getRow(0);
+				if (row == null){
+					sheet.createRow(0);
+				}
+				int lastCellNo = row.getLastCellNum();
+				if (lastCellNo == -1){
+					row.createCell(0);
+				}else{
+					row.createCell(lastCellNo);
+				}
+				
+				row.getCell(lastCellNo).setCellValue(colName);
+				wb.write(fos);
+				
+			}
 
+		}catch(Throwable t){
+			t.printStackTrace();
+		}finally{
+			fos.close();
+		}
 		return false;
 	}
 
@@ -196,7 +284,12 @@ public class ExcelReader {
 		ExcelReader reader = new ExcelReader(sFile);
 		//System.out.println(reader.getCellData("Testcase2", 10, 10));
 		//System.out.println(reader.getCellData("TestSuite", "TSUITE_RunMode", 2));
-		System.out.println(reader.getCellData("Testcases", 2, 3));
+		//System.out.println(reader.getCellData("Testcases", 2, 3));
+		//System.out.println(reader.getCellData("LoginTest", 6, 2));
+		//System.out.println(reader.getCellData("Teststeps", 3, 2));
+		
+		//reader.addColumn("Sheet5", "Result1");
+		System.out.println(reader.setCellData("CheckItems", "Result", 1,"Pass"));
 		//System.out.println(reader.rowCount("Testcases") + "is the row Count");
 	}
 
