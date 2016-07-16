@@ -1,0 +1,30 @@
+1. RDBMS:
+	- Joins with where conditions and group by
+	- ACID
+	- Rollback and commit
+
+2. Selenium WebDriver
+	- Ajax wait method
+	- locate values from table
+	- why automation framework
+	- Scenario1
+	- page obect model pattern
+
+3. Java
+	- Collections
+	- Sentence reversal
+	- sorting numbers
+	
+4. Others
+	- POM.xml 
+	- Defects lifecycle
+	
+	
+
+
+Scenario1:
+window - four frames
+	- frame1 - null
+	- frame2 - signin page
+	- frame3 - submit button - color changes depending on the signin page value
+	- frame4 - having link to go to some page for which verify the it is secured.
