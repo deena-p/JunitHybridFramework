@@ -1,4 +1,4 @@
-package com.junithybrid.test;
+package com.selenium.interview;
 
 import org.junit.Ignore;
 import org.junit.Test;
