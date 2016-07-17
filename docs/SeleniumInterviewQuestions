@@ -27,4 +27,5 @@ window - four frames
 	- frame1 - null
 	- frame2 - signin page
 	- frame3 - submit button - color changes depending on the signin page value
-	- frame4 - having link to go to some page for which verify the it is secured.
+	- frame4 - there will be a file which has to be drag and dropped into the frame 
+	- finally we have to test this page is secured or not.
